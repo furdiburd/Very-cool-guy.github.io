@@ -47,6 +47,43 @@
     </nav>
   </header>
     
+<!-- BOOMBOX -->
+<!-- go to scripts/music.js to add more music! -->
+	  
+<div id="boombox" class="closed">
+
+    <div id="boom-toggle">🎵</div>
+
+    <div id="boom-content">
+
+        <div id="song-name">
+            loading...
+        </div>
+
+        <input type="range" id="seekbar" value="0">
+
+        <div id="time">
+            <span id="current-time">0:00</span>
+            <span id="duration">0:00</span>
+        </div>
+
+        <div id="controls">
+            <button id="prev">⏮</button>
+            <button id="play">⏯</button>
+            <button id="next">⏭</button>
+            <button id="shuffle">🔀</button>
+        </div>
+
+        <div id="volume-container">
+            🔊
+            <input type="range" id="volume" min="0" max="1" step="0.01">
+        </div>
+
+        <div id="playlist"></div>
+
+    </div>
+
+</div>
 
     <h2 style="text-align: center;">
         SOME SOUNDS MAY BE LOUD BE CAUTIOUS
@@ -99,6 +136,8 @@
       <audio id="tuco" src="resources/soundboard/tuco-get-out.mp3"></audio>
 
     </div>
+
+	  
 
       <!-- Changing the button position somehow breaks this idk how -->
       <button
@@ -336,42 +375,6 @@
         <img src="resources/Starwalker_overworld.png" alt="starwalker"/>
       </div>
 
-<!-- BOOMBOX -->
-
-<div id="boombox" class="closed">
-
-    <div id="boom-toggle">🎵</div>
-
-    <div id="boom-content">
-
-        <div id="song-name">
-            loading...
-        </div>
-
-        <input type="range" id="seekbar" value="0">
-
-        <div id="time">
-            <span id="current-time">0:00</span>
-            <span id="duration">0:00</span>
-        </div>
-
-        <div id="controls">
-            <button id="prev">⏮</button>
-            <button id="play">⏯</button>
-            <button id="next">⏭</button>
-            <button id="shuffle">🔀</button>
-        </div>
-
-        <div id="volume-container">
-            🔊
-            <input type="range" id="volume" min="0" max="1" step="0.01">
-        </div>
-
-        <div id="playlist"></div>
-
-    </div>
-
-</div>
 
     <script src="scripts/music.js"></script>
     <script src="scripts/soundboard.js"></script>
