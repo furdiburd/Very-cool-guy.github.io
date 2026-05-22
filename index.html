@@ -46,6 +46,24 @@
     </nav>
   </header>
     
+	<input type="range" id="volume" min="0" max="1" step="0.01" value="0.35">
+	<button onclick="playMenuMusic('./resources/th9.mp3')">
+	  Index Music
+	</button>
+
+
+	<script>
+	function playMenuMusic(soundFile) {
+	  const audio = new Audio(soundFile);
+		document.getElementById("volume").addEventListener("input", (new_volume) => {audio.volume = new_volume.target.value;});
+	  const volume = document.getElementById("volume").value;
+	  audio.volume = volume;
+	  audio.play();
+	}
+	</script>
+	
+	
+	
 
     <h2 style="text-align: center;">
         SOME SOUNDS MAY BE LOUD BE CAUTIOUS
@@ -127,7 +145,7 @@
     <iframe width="420" height="315"
       src="https://www.youtube.com/embed/yvZP3YQNuRo?autoplay=1&mute=1&loop=1&playlist=yvZP3YQNuRo">
     </iframe>
-
+      <img src="resources/tkmiz.jpg" alt="mike! rebuild my kids!">
     <h1>PLAY MY CARD IS BETTER THAN YOUR CARD!!!</h1>
     <img src="resources/capsule_616xa353.jpg">
 
