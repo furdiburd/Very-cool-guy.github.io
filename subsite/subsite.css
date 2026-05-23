@@ -66,6 +66,11 @@ note: to change using class name put dot before class name
     color: gray;
     font-size: 50%;
 }
+
+.blast {
+    background: #FF218C;
+    background: linear-gradient(90deg, rgba(255, 33, 140, 1) 0%, rgba(255, 216, 0, 1) 50%, rgba(33, 177, 255, 1) 100%);
+}
 /* 
 change by id
 note: to change using id put # before id
