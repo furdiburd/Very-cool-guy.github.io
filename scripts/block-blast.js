@@ -102,8 +102,11 @@
         isPaused = false
         paddle.h = PADDLE_HEIGHT_INITIAL
         diamondPaddle.h = paddle.h
-        //                             text, x, y, size, color, direction = "down", lifetime = 40
-        floatyTexts.push(new floatyText("Lives -1", VIRTUAL_WIDTH * 0.2, 40, 30, '#ff0000')) //flavor text to indicate that you lost a life
+        
+        ctx.font = '30px system-ui, sans-serif'
+        let textWidth = ctx.measureText(`Lives: ${MAX_LIVES - livesLostCount}`).width
+        //                             text, x, y, size, color, textAlign = 'right', direction = "down", lifetime = 40
+        floatyTexts.push(new floatyText("Lives -1", VIRTUAL_WIDTH * 0.2 + textWidth/2, 40, 30, '#ff0000')) //flavor text to indicate that you lost a life
     }
 
     function togglePause() {
@@ -217,12 +220,13 @@
 
     /* --- FLAVOR TEXT --- */
     //FLAVOR TEXT THAT I NAMED FLOATY TEXT BECAUSE IT FLOATS AWAY
-    function floatyText(text, x, y, size, color, direction = "down", lifetime = 40){
+    function floatyText(text, x, y, size, color, textAlign = 'right', direction = "down", lifetime = 40){
         this.text = text
         this.x = x
         this.y = y
         this.size = size
         this.color = color
+        this.textAlign = textAlign
         this.direction = direction
         this.lifetime = lifetime
         //extra variables for stuff
@@ -257,7 +261,7 @@
             ctx.globalAlpha = (this.lifetime/this.LIFETIME) //Text fades out
             ctx.font = `${this.size}px system-ui, sans-serif`
             ctx.fillStyle = this.color
-            ctx.textAlign = 'center'
+            ctx.textAlign = this.textAlign
             ctx.fillText(this.text, this.x, this.y)
             ctx.globalAlpha = 1//don't wanna make everything else transparent
         }// end display
@@ -659,8 +663,10 @@
                     color = '#ffffff'
                     break
             }// projectiles and diamonds shouldn't be breaking blocks anyways
-            //                             text, x, y, size, color, direction = "down", lifetime = 40
-            floatyTexts.push(new floatyText("+1", VIRTUAL_WIDTH * 0.4 + 30, 40, 30, color))
+            ctx.font = '30px system-ui, sans-serif'
+            let textWidth = ctx.measureText(`Score: ${currentScore}`).width
+            //                             text, x, y, size, color, textAlign = 'right', direction = "down", lifetime = 40
+            floatyTexts.push(new floatyText("+1", VIRTUAL_WIDTH * 0.4 + textWidth/2, 40, 30, color))
         }
 
         this.checkForCollisions = function (ball) {
