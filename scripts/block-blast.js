@@ -231,7 +231,7 @@
 
         //update position and check if too old
         this.update = function(dt){
-            let speed = dt * 300
+            let speed = dt * 60
             switch(this.direction){
                 case "up":
                     this.y-=speed
@@ -645,6 +645,22 @@
                     break
             }
             currentScore++
+            // add flavor text for score increase
+            let color = '#777'
+            
+            switch (hittingBall.type) {
+                case 'bomb':
+                    color = '#6666ff'
+                    break
+                case 'piercing':
+                    color = '#66ff66'
+                    break
+                default:
+                    color = '#ffffff'
+                    break
+            }// projectiles and diamonds shouldn't be breaking blocks anyways
+            //                             text, x, y, size, color, direction = "down", lifetime = 40
+            floatyTexts.push(new floatyText("+1", VIRTUAL_WIDTH * 0.4 + 30, 40, 30, color))
         }
 
         this.checkForCollisions = function (ball) {
