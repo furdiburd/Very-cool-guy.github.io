@@ -27,6 +27,8 @@
     const PADDLE_HEIGHT_INITIAL = 120
     const PADDLE_SPEED = 420
     const INITIAL_DIAMOND_BONUS = 0
+    const INITIAL_PINK_HEIGHT = 0
+    const PINK_DEPLETION_RATE = 5 //The rate at which the pink paddle shrinks
 
     /* --- BALL/PROJECTILE PROPERTIES --- */
     const BALL_RADIUS = 10
@@ -37,6 +39,8 @@
     const DIAMOND_RADIUS = 6
     const DIAMOND_SPEED = 320
     const DIAMOND_DAMAGE = 20 // Amount of additional paddle height given by diamonds
+    const PINK_RADIUS = 8
+    const PINK_SPEED = 240
 
 
     const PROJECTILE_SPAWN_INTERVAL = Infinity // Seconds, currently disabled
@@ -50,13 +54,15 @@
     const MITOSIS_BLOCK_WEIGHT = 1
     const EXPLODE_BLOCK_WEIGHT = 1
     const DIAMOND_BLOCK_WEIGHT = 0.5 //the light blue blocks
+    const PINK_BLOCK_WEIGHT = 0.05
     const TOTAL_SPECIAL_WEIGHT =
         PROJECTILE_BLOCK_WEIGHT +
         BOMB_BLOCK_WEIGHT +
         PIERCING_BLOCK_WEIGHT +
         MITOSIS_BLOCK_WEIGHT +
         EXPLODE_BLOCK_WEIGHT + 
-        DIAMOND_BLOCK_WEIGHT
+        DIAMOND_BLOCK_WEIGHT + 
+        PINK_BLOCK_WEIGHT
 
     /* --- GAME STATE VARIABLES --- */
     const menuButton = { x: 500, y: 350, w: 200, h: 60, isHovering: false }
@@ -79,6 +85,8 @@
         isGameOver = false
         paddle.y = (VIRTUAL_HEIGHT - PADDLE_HEIGHT_INITIAL) / 2
         diamondPaddle.y = paddle.y
+        pinkPaddle.y = 0
+        pinkPaddle.h = INITIAL_PINK_HEIGHT
         
         generateBlocks()
         livesLostCount = 0
@@ -96,12 +104,14 @@
         paddle.y = (VIRTUAL_HEIGHT - PADDLE_HEIGHT_INITIAL) / 2
         diamondPaddle.y = paddle.y
         diamondPaddle.bonus = INITIAL_DIAMOND_BONUS
+        pinkPaddle.y = 0
         livesLostCount++;
         balls = []
         serveInitialBall()
         isPaused = false
         paddle.h = PADDLE_HEIGHT_INITIAL
         diamondPaddle.h = paddle.h
+        pinkPaddle.h = INITIAL_PINK_HEIGHT
         
         ctx.font = '30px system-ui, sans-serif'
         let textWidth = ctx.measureText(`Lives: ${MAX_LIVES - livesLostCount}`).width
@@ -299,6 +309,14 @@
         bonus: INITIAL_DIAMOND_BONUS,
         dy: 0, // Velocity in y-direction
     }
+    // pink paddle
+    let pinkPaddle = {
+        x: 30,
+        y: 0,
+        w: PADDLE_WIDTH,
+        h: INITIAL_PINK_HEIGHT,
+        dy: 0, // Velocity in y-direction
+    }
 
     // Helper for Rect-Circle Collision Detection
     function rectCircleColliding(rect, circle) {
@@ -432,6 +450,16 @@
                 DIAMOND_BLOCK_WEIGHT
             ){
                 this.type = 'diamond'
+            } else if (
+                rand <
+                PROJECTILE_BLOCK_WEIGHT +
+                BOMB_BLOCK_WEIGHT +
+                PIERCING_BLOCK_WEIGHT +
+                MITOSIS_BLOCK_WEIGHT + 
+                DIAMOND_BLOCK_WEIGHT + 
+                PINK_BLOCK_WEIGHT
+            ){
+                this.type = 'pink'
             } else {
                 this.type = 'explode'
             }
@@ -456,6 +484,9 @@
                     break
                 case 'diamond':
                     ctx.fillStyle = '#32ddff'
+                    break
+                case 'pink':
+                    ctx.fillStyle = '#F5A9B8'
                     break
                 default:
                     ctx.fillStyle = '#777'
@@ -519,6 +550,9 @@
                             break
                         case 'diamond':
                             color = '#32ddff'
+                            break
+                        case 'pink'
+                            color = '#F5A9B8'
                             break
                     }
                     const particle = new BlockBreakParticle(
@@ -666,6 +700,19 @@
                         balls.push(diamond)
                     }
                     break
+                case 'pink':
+                    // Spawn a pink ball aiming generally away from the paddle
+                    const angle = generateAngle(MIN_BOUNCE_ANGLE) // Could be adjusted
+                    const pink = new Ball(
+                        this.x + this.w / 2,
+                        this.y + this.h / 2,
+                        PINK_RADIUS,
+                        'pink',
+                    )
+                    pink.vx = PINK_SPEED * Math.cos(angle)
+                    pink.vy = PINK_SPEED * Math.sin(angle)
+                    balls.push(pink)
+                    break
             }
             // currentScore++
         }
@@ -698,7 +745,7 @@
                     default:
                         color = '#ffffff'
                         break
-                }// projectiles and diamonds shouldn't be breaking blocks anyways
+                }// projectiles, diamonds, and pinks shouldn't be breaking blocks anyways
                 score(1, color)
                 
                 return true
@@ -723,7 +770,7 @@
             }
 
             // Normal and Bomb ball collision action
-            if (ball.type !== 'projectile' && ball.type !== 'diamond' && !ball.isDisabled) {
+            if (ball.type !== 'projectile' && ball.type !== 'diamond' && ball.type !== 'pink' && !ball.isDisabled) {
                 if (ball.type === 'bomb' && this.type !== 'mitosis') {
                     // Bomb explosion on impact
                     const bombCenterX = ball.x
@@ -781,7 +828,7 @@
                         default:
                             color = '#ffffff'
                             break
-                    }// projectiles and diamonds shouldn't be breaking blocks anyways
+                    }// projectiles, diamonds, and pinks shouldn't be breaking blocks anyways
                     score(1, color)
                 }
             }
@@ -904,6 +951,11 @@
                     ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
                     ctx.fill()
                     break
+                case 'pink':
+                    ctx.fillStyle = '#F5A9B8'
+                    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
+                    ctx.fill()
+                    break
                 default: // 'normal' ball
                     ctx.fillStyle = '#ffffff'
                     ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
@@ -983,6 +1035,12 @@
         paddle.y = Math.max(0, Math.min(VIRTUAL_HEIGHT - paddle.h, paddle.y))
         // Update diamond paddle
         diamondPaddle.y = paddle.y - diamondPaddle.bonus / 2.0
+        // Update pink paddle
+        if(pinkPaddle.h > 0) {
+            pinkPaddle.h -= dt * PINK_DEPLETION_RATE
+            pinkPaddle.y = VIRTUAL_HEIGHT - paddle.h - paddle.y
+        }
+        
 
         // Update particles and remove expired ones
         for (let i = 0; i < brokenBlockParticles.length; i++) {
@@ -1056,6 +1114,13 @@
                         score((Math.random() < 0.5) ? 1 : 2, '#32ddff')
                         continue // Skip block collision check for this destroyed diamond
                     }
+                    if (ball.type === 'pink') {
+                        // Pink hits paddle: reset pink paddle
+                        pinkPaddle.h = paddle.h
+                        balls.splice(i, 1)
+                        score(5, '#F5A9B8')
+                        continue // Skip block collision check for this destroyed diamond
+                    }
                 }
             }
             // Paddle collision
@@ -1096,6 +1161,38 @@
                     balls.splice(i, 1)
                     score((Math.random() < 0.5) ? 1 : 2, '#32ddff')
                     continue // Skip block collision check for this destroyed diamond
+                }
+                if (ball.type === 'pink') {
+                    // Pink hits paddle: reset pink paddle
+                    pinkPaddle.h = paddle.h
+                    balls.splice(i, 1)
+                    score(5, '#F5A9B8')
+                    continue // Skip block collision check for this destroyed diamond
+                }
+            }
+            if(pinkPaddle.h > 0) {
+                // Pink Paddle collision
+                if (rectCircleColliding(pinkPaddle, ball)) {
+                    //pink paddle ignores certain balls
+                    if(ball.type !== 'projectile') {
+                        // Calculate bounce angle based on relative hit position on the pink paddle
+                        const relativeY = (ball.y - (pinkPaddle.y + pinkPaddle.h / 2)) / (pinkPaddle.h / 2)
+                        const bounceAngle = relativeY * (Math.PI / 3) // Max angle of +/- 60 degrees
+        
+                        // Set velocity and reset state
+                        ball.vx = Math.cos(bounceAngle) * BALL_SPEED
+                        ball.vy = Math.sin(bounceAngle) * BALL_SPEED
+                        ball.x = pinkPaddle.x + pinkPaddle.w + ball.r + 0.1 // Reposition ball to prevent sticking
+                        ball.isDisabled = false
+                        ball.blocksHitCount = ball.type === 'piercing' ? 0 : Infinity // Reset block hit count
+                        if (ball.type === 'pink') {
+                            // Pink hits paddle: reset pink paddle
+                            pinkPaddle.h = paddle.h
+                            balls.splice(i, 1)
+                            score(5, '#F5A9B8')
+                            continue // Skip block collision check for this destroyed diamond
+                        }
+                    }
                 }
             }
 
@@ -1246,7 +1343,9 @@
         for (const block of blocks) {
             block.display()
         }
-
+        // Pink Paddle
+        if(pinkPaddle.h > 0)
+            drawRoundRect(pinkPaddle.x, pinkPaddle.y, pinkPaddle.w, pinkPaddle.h, Math.min(6, pinkPaddle.h), '#f5a9b880')
         // Diamond Paddle
         if(diamondPaddle.bonus) //meant to appear under the main paddle
             drawRoundRect(diamondPaddle.x, diamondPaddle.y, diamondPaddle.w, diamondPaddle.h, 6, '#32ddff')
