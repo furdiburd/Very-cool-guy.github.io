@@ -115,8 +115,8 @@
         
         ctx.font = '30px system-ui, sans-serif'
         let textWidth = ctx.measureText(`Lives: ${MAX_LIVES - livesLostCount}`).width
-        //                             text, x, y, size, color, textAlign = 'right', direction = "down", lifetime = 40
-        floatyTexts.push(new floatyText("Lives -1", VIRTUAL_WIDTH * 0.2 + textWidth/2, 40, 30, '#ff0000', 'right', 'down', 90)) //flavor text to indicate that you lost a life
+        //                             text, x, y, size, color, type, lifetime = 60, textAlign = 'right', direction = "down"
+        floatyTexts.push(new floatyText("Lives -1", VIRTUAL_WIDTH * 0.2 + textWidth/2, 40, 30, '#ff0000', 'life', 90)) //flavor text to indicate that you lost a life
     }
 
     function togglePause() {
@@ -230,12 +230,13 @@
 
     /* --- FLAVOR TEXT --- */
     //FLAVOR TEXT THAT I NAMED FLOATY TEXT BECAUSE IT FLOATS AWAY
-    function floatyText(text, x, y, size, color, textAlign = 'right', direction = "down", lifetime = 60){
+    function floatyText(text, x, y, size, color, type, lifetime = 60, textAlign = 'right', direction = "down"){
         this.text = text
         this.x = x
         this.y = y
         this.size = size
         this.color = color
+        this.type = type
         this.textAlign = textAlign
         this.direction = direction
         this.lifetime = lifetime
@@ -285,9 +286,17 @@
         // add flavor text for score increase
         ctx.font = '30px system-ui, sans-serif'
         let textWidth = ctx.measureText(`Score: ${currentScore}`).width
-        //                             text, x, y, size, color, textAlign = 'right', direction = "down", lifetime = 40
+
+        //So if the previous score is the same source, make my number bigger and remove the previous one
+        if(floatyTexts[floatyTexts.length - 1].type === 'score' && floatyTexts[floatyTexts.length - 1].color === color){
+            let x = Number(floatyTexts[floatyTexts.length - 1].text)
+            amount += x
+            floatyTexts.pop()
+        }
+        
+        //                             text, x, y, size, color, type, lifetime = 60, textAlign = 'right', direction = "down"
         let text = ((amount >= 0) ? "+" : "") + `${amount}`
-        floatyTexts.push(new floatyText(text, VIRTUAL_WIDTH * 0.4 + textWidth/2, 40, 30, color))
+        floatyTexts.push(new floatyText(text, VIRTUAL_WIDTH * 0.4 + textWidth/2, 40, 30, color, 'score'))
     }
 
     /* --- GAME OBJECTS --- */
