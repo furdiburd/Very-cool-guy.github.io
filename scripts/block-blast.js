@@ -486,7 +486,7 @@
                     ctx.fillStyle = '#32ddff'
                     break
                 case 'pink':
-                    ctx.fillStyle = '#F5A9B8'
+                    ctx.fillStyle = '#f838ff'
                     break
                 default:
                     ctx.fillStyle = '#777'
@@ -552,7 +552,7 @@
                             color = '#32ddff'
                             break
                         case 'pink':
-                            color = '#F5A9B8'
+                            color = '#f838ff'
                             break
                     }
                     const particle = new BlockBreakParticle(
@@ -952,7 +952,7 @@
                     ctx.fill()
                     break
                 case 'pink':
-                    ctx.fillStyle = '#F5A9B8'
+                    ctx.fillStyle = '#f838ff'
                     ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
                     ctx.fill()
                     break
@@ -1118,7 +1118,7 @@
                         // Pink hits paddle: reset pink paddle
                         pinkPaddle.h = paddle.h
                         balls.splice(i, 1)
-                        score(5, '#F5A9B8')
+                        score(5, '#f838ff')
                         continue // Skip block collision check for this destroyed diamond
                     }
                 }
@@ -1166,7 +1166,7 @@
                     // Pink hits paddle: reset pink paddle
                     pinkPaddle.h = paddle.h
                     balls.splice(i, 1)
-                    score(5, '#F5A9B8')
+                    score(5, '#f838ff')
                     continue // Skip block collision check for this destroyed diamond
                 }
             }
@@ -1189,7 +1189,7 @@
                             // Pink hits paddle: reset pink paddle
                             pinkPaddle.h = paddle.h
                             balls.splice(i, 1)
-                            score(5, '#F5A9B8')
+                            score(5, '#f838ff')
                             continue // Skip block collision check for this destroyed diamond
                         }
                     }
@@ -1345,7 +1345,7 @@
         }
         // Pink Paddle
         if(pinkPaddle.h > 0)
-            drawRoundRect(pinkPaddle.x, pinkPaddle.y, pinkPaddle.w, pinkPaddle.h, Math.min(6, pinkPaddle.h), '#f5a9b880')
+            drawRoundRect(pinkPaddle.x, pinkPaddle.y, pinkPaddle.w, pinkPaddle.h, Math.min(6, pinkPaddle.h), '#f838ff80')
         // Diamond Paddle
         if(diamondPaddle.bonus) //meant to appear under the main paddle
             drawRoundRect(diamondPaddle.x, diamondPaddle.y, diamondPaddle.w, diamondPaddle.h, 6, '#32ddff')
