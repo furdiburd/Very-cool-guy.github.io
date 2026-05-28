@@ -288,7 +288,7 @@
         let textWidth = ctx.measureText(`Score: ${currentScore}`).width
 
         //So if the previous score is the same source, make my number bigger and remove the previous one
-        if(floatyTexts[floatyTexts.length - 1].type === 'score' && floatyTexts[floatyTexts.length - 1].color === color){
+        if(floatyTexts.length && floatyTexts[floatyTexts.length - 1].type === 'score' && floatyTexts[floatyTexts.length - 1].color === color){
             let x = Number(floatyTexts[floatyTexts.length - 1].text)
             amount += x
             floatyTexts.pop()
