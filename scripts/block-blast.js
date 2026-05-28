@@ -54,7 +54,7 @@
     const MITOSIS_BLOCK_WEIGHT = 1
     const EXPLODE_BLOCK_WEIGHT = 1
     const DIAMOND_BLOCK_WEIGHT = 0.5 //the light blue blocks
-    const PINK_BLOCK_WEIGHT = 0.05
+    const PINK_BLOCK_WEIGHT = 0.1
     const TOTAL_SPECIAL_WEIGHT =
         PROJECTILE_BLOCK_WEIGHT +
         BOMB_BLOCK_WEIGHT +
@@ -1116,7 +1116,7 @@
                     }
                     if (ball.type === 'pink') {
                         // Pink hits paddle: reset pink paddle
-                        pinkPaddle.h = paddle.h
+                        pinkPaddle.h = diamondPaddle.h
                         balls.splice(i, 1)
                         score(5, '#f838ff')
                         continue // Skip block collision check for this destroyed diamond
@@ -1139,6 +1139,7 @@
                 if (ball.type === 'projectile') {
                     // Projectile hits paddle: paddle damage and self-destruction
                     paddle.h -= PROJECTILE_DAMAGE
+                    diamondPaddle.h = 0
                     balls.splice(i, 1)
                     if (paddle.h <= 0) {
                             if(DIE_REFRESH){
@@ -1165,6 +1166,7 @@
                 if (ball.type === 'pink') {
                     // Pink hits paddle: reset pink paddle
                     pinkPaddle.h = paddle.h
+                    pinkPaddle.h = paddle.h
                     balls.splice(i, 1)
                     score(5, '#f838ff')
                     continue // Skip block collision check for this destroyed diamond
@@ -1187,7 +1189,7 @@
                         ball.blocksHitCount = ball.type === 'piercing' ? 0 : Infinity // Reset block hit count
                         if (ball.type === 'pink') {
                             // Pink hits paddle: reset pink paddle
-                            pinkPaddle.h = paddle.h
+                            pinkPaddle.h = Math.max(paddle.h, diamondPaddle.h)
                             balls.splice(i, 1)
                             score(5, '#f838ff')
                             continue // Skip block collision check for this destroyed diamond
