@@ -9,8 +9,7 @@ const songs = [
     "/resources/music/Oopsie Go Wrong - Zaki.mp3",
     "/resources/music/Plizzanet - Yo! Noid 2 OST.mp3",
     "/resources/music/Erasing Me Erasing You.mp3",
-    "/resources/music/Dongrang Who Denies All.mp3",
-    "/resources/music/Paul McCartney - Band On The Run.opus"
+    "/resources/music/Dongrang Who Denies All.mp3"
 ];
 
 let currentSong = 0;
