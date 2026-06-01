@@ -54,7 +54,7 @@
     const MITOSIS_BLOCK_WEIGHT = 1
     const EXPLODE_BLOCK_WEIGHT = 1
     const DIAMOND_BLOCK_WEIGHT = 0.5 //the light blue blocks
-    const PINK_BLOCK_WEIGHT = 0.05
+    const PINK_BLOCK_WEIGHT = 0.1
     const TOTAL_SPECIAL_WEIGHT =
         PROJECTILE_BLOCK_WEIGHT +
         BOMB_BLOCK_WEIGHT +
@@ -115,8 +115,8 @@
         
         ctx.font = '30px system-ui, sans-serif'
         let textWidth = ctx.measureText(`Lives: ${MAX_LIVES - livesLostCount}`).width
-        //                             text, x, y, size, color, textAlign = 'right', direction = "down", lifetime = 40
-        floatyTexts.push(new floatyText("Lives -1", VIRTUAL_WIDTH * 0.2 + textWidth/2, 40, 30, '#ff0000', 'right', 'down', 90)) //flavor text to indicate that you lost a life
+        //                             text, x, y, size, color, type, lifetime = 60, textAlign = 'right', direction = "down"
+        floatyTexts.push(new floatyText("Lives -1", VIRTUAL_WIDTH * 0.2 + textWidth/2, 40, 30, '#ff0000', 'life', 90)) //flavor text to indicate that you lost a life
     }
 
     function togglePause() {
@@ -230,12 +230,13 @@
 
     /* --- FLAVOR TEXT --- */
     //FLAVOR TEXT THAT I NAMED FLOATY TEXT BECAUSE IT FLOATS AWAY
-    function floatyText(text, x, y, size, color, textAlign = 'right', direction = "down", lifetime = 60){
+    function floatyText(text, x, y, size, color, type, lifetime = 60, textAlign = 'right', direction = "down"){
         this.text = text
         this.x = x
         this.y = y
         this.size = size
         this.color = color
+        this.type = type
         this.textAlign = textAlign
         this.direction = direction
         this.lifetime = lifetime
@@ -285,9 +286,17 @@
         // add flavor text for score increase
         ctx.font = '30px system-ui, sans-serif'
         let textWidth = ctx.measureText(`Score: ${currentScore}`).width
-        //                             text, x, y, size, color, textAlign = 'right', direction = "down", lifetime = 40
+
+        //So if the previous score is the same source, make my number bigger and remove the previous one
+        if(floatyTexts.length && floatyTexts[floatyTexts.length - 1].type === 'score' && floatyTexts[floatyTexts.length - 1].color === color){
+            let x = Number(floatyTexts[floatyTexts.length - 1].text)
+            amount += x
+            floatyTexts.pop()
+        }
+        
+        //                             text, x, y, size, color, type, lifetime = 60, textAlign = 'right', direction = "down"
         let text = ((amount >= 0) ? "+" : "") + `${amount}`
-        floatyTexts.push(new floatyText(text, VIRTUAL_WIDTH * 0.4 + textWidth/2, 40, 30, color))
+        floatyTexts.push(new floatyText(text, VIRTUAL_WIDTH * 0.4 + textWidth/2, 40, 30, color, 'score'))
     }
 
     /* --- GAME OBJECTS --- */
@@ -486,7 +495,7 @@
                     ctx.fillStyle = '#32ddff'
                     break
                 case 'pink':
-                    ctx.fillStyle = '#F5A9B8'
+                    ctx.fillStyle = '#f838ff'
                     break
                 default:
                     ctx.fillStyle = '#777'
@@ -552,7 +561,7 @@
                             color = '#32ddff'
                             break
                         case 'pink':
-                            color = '#F5A9B8'
+                            color = '#f838ff'
                             break
                     }
                     const particle = new BlockBreakParticle(
@@ -952,7 +961,7 @@
                     ctx.fill()
                     break
                 case 'pink':
-                    ctx.fillStyle = '#F5A9B8'
+                    ctx.fillStyle = '#f838ff'
                     ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
                     ctx.fill()
                     break
@@ -1038,7 +1047,7 @@
         // Update pink paddle
         if(pinkPaddle.h > 0) {
             pinkPaddle.h -= dt * PINK_DEPLETION_RATE
-            pinkPaddle.y = VIRTUAL_HEIGHT - paddle.h - paddle.y
+            pinkPaddle.y = paddle.y * ((VIRTUAL_HEIGHT - pinkPaddle.h) / (VIRTUAL_HEIGHT - paddle.h))
         }
         
 
@@ -1116,9 +1125,9 @@
                     }
                     if (ball.type === 'pink') {
                         // Pink hits paddle: reset pink paddle
-                        pinkPaddle.h = paddle.h
+                        pinkPaddle.h = diamondPaddle.h
                         balls.splice(i, 1)
-                        score(5, '#F5A9B8')
+                        score(5, '#f838ff')
                         continue // Skip block collision check for this destroyed diamond
                     }
                 }
@@ -1139,6 +1148,7 @@
                 if (ball.type === 'projectile') {
                     // Projectile hits paddle: paddle damage and self-destruction
                     paddle.h -= PROJECTILE_DAMAGE
+                    diamondPaddle.h = 0
                     balls.splice(i, 1)
                     if (paddle.h <= 0) {
                             if(DIE_REFRESH){
@@ -1165,8 +1175,9 @@
                 if (ball.type === 'pink') {
                     // Pink hits paddle: reset pink paddle
                     pinkPaddle.h = paddle.h
+                    pinkPaddle.h = paddle.h
                     balls.splice(i, 1)
-                    score(5, '#F5A9B8')
+                    score(5, '#f838ff')
                     continue // Skip block collision check for this destroyed diamond
                 }
             }
@@ -1187,9 +1198,9 @@
                         ball.blocksHitCount = ball.type === 'piercing' ? 0 : Infinity // Reset block hit count
                         if (ball.type === 'pink') {
                             // Pink hits paddle: reset pink paddle
-                            pinkPaddle.h = paddle.h
+                            pinkPaddle.h = Math.max(paddle.h, diamondPaddle.h)
                             balls.splice(i, 1)
-                            score(5, '#F5A9B8')
+                            score(5, '#f838ff')
                             continue // Skip block collision check for this destroyed diamond
                         }
                     }
@@ -1345,7 +1356,7 @@
         }
         // Pink Paddle
         if(pinkPaddle.h > 0)
-            drawRoundRect(pinkPaddle.x, pinkPaddle.y, pinkPaddle.w, pinkPaddle.h, Math.min(6, pinkPaddle.h), '#f5a9b880')
+            drawRoundRect(pinkPaddle.x, pinkPaddle.y, pinkPaddle.w, pinkPaddle.h, Math.min(6, pinkPaddle.h), '#f838ff80')
         // Diamond Paddle
         if(diamondPaddle.bonus) //meant to appear under the main paddle
             drawRoundRect(diamondPaddle.x, diamondPaddle.y, diamondPaddle.w, diamondPaddle.h, 6, '#32ddff')
