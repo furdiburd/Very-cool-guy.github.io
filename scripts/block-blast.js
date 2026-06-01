@@ -42,6 +42,31 @@
     const PINK_RADIUS = 8
     const PINK_SPEED = 240
 
+    /* --- COLORS --- */
+    const COLORS = {
+        BLACK: '#050505',
+        WHITE: '#fff',
+        WHITE_D: '#e6e6e6',
+        GRAY: '#777',
+        GRAY_L: '#ccc',
+        RED: '#ff6666',
+        BLUE: '#6666ff',
+        BLUE_D: '#222288',
+        BLUE_L: '#6464fa',
+        GREEN: '#66ff66',
+        GREEN_D: '#228822',
+        ORANGE: '#ffcc66',
+        DIAMOND: '#33ddff',
+        PINK: '#ff66aa',
+        PINK_T: '#ff66aa80'
+    }
+    const COLORS2 = {
+        BLACK_T: 'rgba(0,0,0,0.6)',
+        BLACK_T2: 'rgba(0,0,0,0.66)',
+        ORANGE: `rgba(255, 204, 102, 1)`,
+        BLUE: `rgba(100,100,250, 1)`,
+        WHITE_T: 'rgba(230,230,230,0.1)',
+    }
 
     const PROJECTILE_SPAWN_INTERVAL = Infinity // Seconds, currently disabled
     let projectileTimer = 0
@@ -277,7 +302,7 @@
             ctx.globalAlpha = 1//don't wanna make everything else transparent
         }// end display
     }
-    function score(amount, color = '#777'){
+    function score(amount, color = COLORS.GRAY){
         if(amount === 0)
             return
         
@@ -477,28 +502,28 @@
         this.display = function () {
             switch (this.type) {
                 case 'projectile':
-                    ctx.fillStyle = '#ff6666'
+                    ctx.fillStyle = COLORS.RED
                     break
                 case 'bomb':
-                    ctx.fillStyle = '#6666ff'
+                    ctx.fillStyle = COLORS.BLUE
                     break
                 case 'piercing':
-                    ctx.fillStyle = '#66ff66'
+                    ctx.fillStyle = COLORS.GREEN
                     break
                 case 'mitosis':
-                    ctx.fillStyle = '#ffffff'
+                    ctx.fillStyle = COLORS.WHITE
                     break
                 case 'explode':
-                    ctx.fillStyle = '#ffcc66'
+                    ctx.fillStyle = COLORS.ORANGE
                     break
                 case 'diamond':
-                    ctx.fillStyle = '#32ddff'
+                    ctx.fillStyle = COLORS.DIAMOND
                     break
                 case 'pink':
-                    ctx.fillStyle = '#f838ff'
+                    ctx.fillStyle = COLORS.PINK
                     break
                 default:
-                    ctx.fillStyle = '#777'
+                    ctx.fillStyle = COLORS.GRAY
                     break
             }
             ctx.fillRect(this.x, this.y, this.w, this.h)
@@ -528,40 +553,40 @@
 
                     switch (this.type) {
                         case 'projectile':
-                            color = '#ff6666'
+                            color = COLORS.RED
                             break
                         case 'bomb':
-                            color = '#6666ff'
+                            color = COLORS.BLUE
                             break
                         case 'piercing':
-                            color = '#66ff66'
+                            color = COLORS.GREEN
                             break
                         case 'mitosis':
                             // Mitosis particle color depends on the hitting ball type
                             if (hittingBall !== undefined) {
                                 switch (hittingBall.type) {
                                     case 'bomb':
-                                        color = '#6666ff'
+                                        color = COLORS.BLUE
                                         break
                                     case 'piercing':
-                                        color = '#66ff66'
+                                        color = COLORS.GREEN
                                         break
                                     default:
-                                        color = '#ffffff'
+                                        color = COLORS.WHITE
                                         break
                                 }
                             } else {
-                                color = '#ffffff'
+                                color = COLORS.WHITE
                             }
                             break
                         case 'explode':
-                            color = '#ffcc66'
+                            color = COLORS.ORANGE
                             break
                         case 'diamond':
-                            color = '#32ddff'
+                            color = COLORS.DIAMOND
                             break
                         case 'pink':
-                            color = '#f838ff'
+                            color = COLORS.PINK
                             break
                     }
                     const particle = new BlockBreakParticle(
@@ -659,7 +684,7 @@
                             radius,
                             vx,
                             vy,
-                            `rgba(255, 204, 102, 1)`,
+                            COLORS2.ORANGE,
                             EXPLOSION_PARTICLE_LIFETIME,
                         )
                         explosionParticles.push(particle)
@@ -689,7 +714,7 @@
                             }
                         }
                         // add flavor text for score increase
-                        let color = '#ffcc66'
+                        let color = COLORS.ORANGE
                         score(pointCount, color)
                     }, 250)
                     break
@@ -743,16 +768,16 @@
                 this.activateEffect(ball)
                 
                 // add flavor text for score increase
-                let color = '#777'
+                let color = COLORS.GRAY
                 switch (ball.type) {
                     case 'bomb':
-                        color = '#6666ff'
+                        color = COLORS.BLUE_L
                         break
                     case 'piercing':
-                        color = '#66ff66'
+                        color = COLORS.GREEN
                         break
                     default:
-                        color = '#ffffff'
+                        color = COLORS.WHITE
                         break
                 }// projectiles, diamonds, and pinks shouldn't be breaking blocks anyways
                 score(1, color)
@@ -796,7 +821,7 @@
                         }
                     }
                     // add flavor text for score increase
-                    let color = '#6464fa'
+                    let color = COLORS.BLUE_L
                     score(pointCount, color)
                     
                     ball.isDestroyed = true // Destroy the bomb ball
@@ -814,7 +839,7 @@
                             radius,
                             vx,
                             vy,
-                            `rgba(100,100,250, 1)`,
+                            COLORS2.BLUE,
                             EXPLOSION_PARTICLE_LIFETIME,
                         )
                         explosionParticles.push(particle)
@@ -825,17 +850,17 @@
                     }
                     this.activateEffect(ball)
                     // add flavor text for score increase
-                    let color = '#777'
+                    let color = COLORS.GRAY
                     
                     switch (ball.type) {
                         case 'bomb':
-                            color = '#6666ff'
+                            color = COLORS.BLUE_L
                             break
                         case 'piercing':
-                            color = '#66ff66'
+                            color = COLORS.GREEN
                             break
                         default:
-                            color = '#ffffff'
+                            color = COLORS.WHITE
                             break
                     }// projectiles, diamonds, and pinks shouldn't be breaking blocks anyways
                     score(1, color)
@@ -919,13 +944,13 @@
             ctx.beginPath()
             switch (this.type) {
                 case 'projectile':
-                    ctx.fillStyle = '#ff4444'
+                    ctx.fillStyle = COLORS.RED
                     ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
                     ctx.fill()
                     break
                 case 'bomb':
                     if (this.isDisabled) {
-                        ctx.fillStyle = '#222288'
+                        ctx.fillStyle = COLORS.BLUE_D
                         ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
                         ctx.fill()
                     } else {
@@ -939,7 +964,7 @@
                         } else {
                             pulse = 0.8 + pulse * 0.2
                         }
-                        ctx.fillStyle = lerpHexColor('#111144', '#4444ff', pulse)
+                        ctx.fillStyle = lerpHexColor(COLORS.BLUE_D, COLORS.BLUE, pulse)
                         ctx.arc(this.x, this.y, this.r * pulse, 0, Math.PI * 2)
                         ctx.fill()
                     }
@@ -951,22 +976,22 @@
                         0.5 *
                         (Math.max(PIERCING_BLOCK_LIMIT - this.blocksHitCount, 0) /
                             PIERCING_BLOCK_LIMIT)
-                    ctx.fillStyle = lerpHexColor('#228822', '#44ff44', sizeFactor)
+                    ctx.fillStyle = lerpHexColor(COLORS.GREEN_D, COLORS.GREEN, sizeFactor)
                     ctx.arc(this.x, this.y, this.r * sizeFactor, 0, Math.PI * 2)
                     ctx.fill()
                     break
                 case 'diamond':
-                    ctx.fillStyle = '#32ddff'
+                    ctx.fillStyle = COLORS.DIAMOND
                     ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
                     ctx.fill()
                     break
                 case 'pink':
-                    ctx.fillStyle = '#f838ff'
+                    ctx.fillStyle = COLORS.PINK
                     ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
                     ctx.fill()
                     break
                 default: // 'normal' ball
-                    ctx.fillStyle = '#ffffff'
+                    ctx.fillStyle = COLORS.WHITE
                     ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
                     ctx.fill()
                     break
@@ -1112,7 +1137,7 @@
                         //     }
                         // }
                         
-                        score(-1, '#ff4444')
+                        score(-1, COLORS.RED)
                         continue // Skip block collision check for this destroyed projectile
                     }
                     if (ball.type === 'diamond') {
@@ -1120,14 +1145,14 @@
                         diamondPaddle.bonus += DIAMOND_DAMAGE
                         diamondPaddle.h = paddle.h + diamondPaddle.bonus
                         balls.splice(i, 1)
-                        score((Math.random() < 0.5) ? 1 : 2, '#32ddff')
+                        score((Math.random() < 0.5) ? 1 : 2, COLORS.DIAMOND)
                         continue // Skip block collision check for this destroyed diamond
                     }
                     if (ball.type === 'pink') {
                         // Pink hits paddle: reset pink paddle
                         pinkPaddle.h = diamondPaddle.h
                         balls.splice(i, 1)
-                        score(5, '#f838ff')
+                        score(5, COLORS.PINK)
                         continue // Skip block collision check for this destroyed diamond
                     }
                 }
@@ -1161,7 +1186,7 @@
                                 paddle.y = (VIRTUAL_HEIGHT - PADDLE_HEIGHT_INITIAL) / 2
                             }
                     }
-                    score(-1, '#ff4444')
+                    score(-1, COLORS.RED)
                     continue // Skip block collision check for this destroyed projectile
                 }
                 if (ball.type === 'diamond') {
@@ -1169,7 +1194,7 @@
                     diamondPaddle.bonus += DIAMOND_DAMAGE
                     diamondPaddle.h = paddle.h + diamondPaddle.bonus
                     balls.splice(i, 1)
-                    score((Math.random() < 0.5) ? 1 : 2, '#32ddff')
+                    score((Math.random() < 0.5) ? 1 : 2, COLORS.DIAMOND)
                     continue // Skip block collision check for this destroyed diamond
                 }
                 if (ball.type === 'pink') {
@@ -1177,7 +1202,7 @@
                     pinkPaddle.h = paddle.h
                     pinkPaddle.h = paddle.h
                     balls.splice(i, 1)
-                    score(5, '#f838ff')
+                    score(5, COLORS.PINK)
                     continue // Skip block collision check for this destroyed diamond
                 }
             }
@@ -1200,7 +1225,7 @@
                             // Pink hits paddle: reset pink paddle
                             pinkPaddle.h = Math.max(paddle.h, diamondPaddle.h)
                             balls.splice(i, 1)
-                            score(5, '#f838ff')
+                            score(5, COLORS.PINK)
                             continue // Skip block collision check for this destroyed diamond
                         }
                     }
@@ -1338,11 +1363,11 @@
         ctx.save()
 
         // Background
-        ctx.fillStyle = '#050505'
+        ctx.fillStyle = COLORS.BLACK
         ctx.fillRect(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
 
         // Center divider (Net) - Not strictly centered, but positioned
-        ctx.fillStyle = 'rgba(230,230,230,0.08)'
+        ctx.fillStyle = COLORS2.WHITE_T
         const netWidth = 6
         const segmentHeight = 22
         const netX = (VIRTUAL_WIDTH - netWidth) / 2 + (BLOCK_SIZE * 8) / 2 // Adjusted position
@@ -1356,13 +1381,13 @@
         }
         // Pink Paddle
         if(pinkPaddle.h > 0)
-            drawRoundRect(pinkPaddle.x, pinkPaddle.y, pinkPaddle.w, pinkPaddle.h, Math.min(6, pinkPaddle.h), '#f838ff80')
+            drawRoundRect(pinkPaddle.x, pinkPaddle.y, pinkPaddle.w, pinkPaddle.h, Math.min(6, pinkPaddle.h), COLORS.PINK_T)
         // Diamond Paddle
         if(diamondPaddle.bonus) //meant to appear under the main paddle
-            drawRoundRect(diamondPaddle.x, diamondPaddle.y, diamondPaddle.w, diamondPaddle.h, 6, '#32ddff')
+            drawRoundRect(diamondPaddle.x, diamondPaddle.y, diamondPaddle.w, diamondPaddle.h, 6, COLORS.DIAMOND)
 
         // Paddle
-        drawRoundRect(paddle.x, paddle.y, paddle.w, paddle.h, 6, '#e6e6e6')
+        drawRoundRect(paddle.x, paddle.y, paddle.w, paddle.h, 6, COLORS.WHITE_D)
 
         // Balls
         for (const ball of balls) {
@@ -1382,7 +1407,7 @@
         }
 
         // Scoreboard - Lives
-        ctx.fillStyle = '#e6e6e6'
+        ctx.fillStyle = COLORS.WHITE_D
         ctx.font = '30px system-ui, sans-serif'
         ctx.textAlign = 'center'
         ctx.fillText(
@@ -1396,9 +1421,9 @@
 
         // Pause screen
         if (isPaused && !isGameOver) {
-            ctx.fillStyle = 'rgba(0,0,0,0.6)'
+            ctx.fillStyle = COLORS2.BLACK_T
             ctx.fillRect(VIRTUAL_WIDTH / 2 - 250, VIRTUAL_HEIGHT / 2 - 48, 500, 96)
-            ctx.fillStyle = '#fff'
+            ctx.fillStyle = COLORS.WHITE
             ctx.font = '20px system-ui, sans-serif'
             ctx.fillText(
                 'Paused. Press Space or Pause to resume.',
@@ -1409,9 +1434,9 @@
 
         // Game over screen
         if (isGameOver) {
-            ctx.fillStyle = 'rgba(0,0,0,0.66)'
+            ctx.fillStyle = COLORS2.BLACK_T2
             ctx.fillRect(VIRTUAL_WIDTH / 2 - 320, VIRTUAL_HEIGHT / 2 - 72, 640, 144)
-            ctx.fillStyle = '#fff'
+            ctx.fillStyle = COLORS.WHITE
             ctx.font = '36px system-ui, sans-serif'
             ctx.fillText(
                 `You got a score of ${currentScore}!`,
@@ -1431,11 +1456,11 @@
 
     function drawMenu() {
         // Background
-        ctx.fillStyle = '#050505'
+        ctx.fillStyle = COLORS.BLACK
         ctx.fillRect(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
 
         // Title
-        ctx.fillStyle = '#e6e6e6'
+        ctx.fillStyle = COLORS.WHITE_D
         ctx.font = '60px system-ui, sans-serif'
         ctx.textAlign = 'center'
         ctx.fillText('[BLOCK][BLAST]', VIRTUAL_WIDTH / 2, 100)
@@ -1443,7 +1468,7 @@
         // Instructions
         ctx.font = '20px system-ui, sans-serif'
         ctx.textAlign = 'center'
-        ctx.fillStyle = '#cccccc'
+        ctx.fillStyle = COLORS.GRAY_L
         ctx.fillText('To Move Press: W (Up) and S (Down)', VIRTUAL_WIDTH / 2, 170)
         ctx.fillText(`Bounce the ball to break blocks!`, VIRTUAL_WIDTH / 2, 195)
         ctx.fillText(
@@ -1459,7 +1484,7 @@
 
 
         // Button
-        const btnColor = menuButton.isHovering ? '#ffffff' : '#e6e6e6'
+        const btnColor = menuButton.isHovering ? COLORS.WHITE : COLORS.WHITE_D
         drawRoundRect(
             menuButton.x,
             menuButton.y,
@@ -1470,7 +1495,7 @@
         )
 
         // Button text
-        ctx.fillStyle = '#050505'
+        ctx.fillStyle = COLORS.BLACK
         ctx.font = '28px system-ui, sans-serif'
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
