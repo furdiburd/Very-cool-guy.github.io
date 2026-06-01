@@ -79,7 +79,7 @@
     const MITOSIS_BLOCK_WEIGHT = 1
     const EXPLODE_BLOCK_WEIGHT = 1
     const DIAMOND_BLOCK_WEIGHT = 0.5 //the light blue blocks
-    const PINK_BLOCK_WEIGHT = 0.1
+    const PINK_BLOCK_WEIGHT = 0.08
     const TOTAL_SPECIAL_WEIGHT =
         PROJECTILE_BLOCK_WEIGHT +
         BOMB_BLOCK_WEIGHT +
@@ -1072,7 +1072,8 @@
         // Update pink paddle
         if(pinkPaddle.h > 0) {
             pinkPaddle.h -= dt * PINK_DEPLETION_RATE
-            pinkPaddle.y = VIRTUAL_HEIGHT - paddle.y * ((VIRTUAL_HEIGHT - pinkPaddle.h) / (VIRTUAL_HEIGHT - paddle.h))
+            let paul = VIRTUAL_HEIGHT - pinkPaddle.h
+            pinkPaddle.y = paul - paddle.y * ((paul) / (VIRTUAL_HEIGHT - paddle.h))
         }
         
 
