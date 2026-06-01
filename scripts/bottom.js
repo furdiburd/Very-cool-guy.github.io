@@ -3,7 +3,7 @@ var img = document.getElementById("myImg");
 var modalImg = document.getElementById("img01");
 img.onclick = function(){
   	modal.style.display = "block";
-  	modalImg.src = "resources/bottomlicense.png";
+   	modalImg.src = "resources/bottomlicense.avif";
 }
 var span = document.getElementsByClassName("close")[0];
 span.onclick = function() { 
