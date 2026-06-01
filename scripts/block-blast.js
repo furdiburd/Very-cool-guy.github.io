@@ -1072,7 +1072,7 @@
         // Update pink paddle
         if(pinkPaddle.h > 0) {
             pinkPaddle.h -= dt * PINK_DEPLETION_RATE
-            pinkPaddle.y = paddle.y * ((VIRTUAL_HEIGHT - pinkPaddle.h) / (VIRTUAL_HEIGHT - paddle.h))
+            pinkPaddle.y = VIRTUAL_HEIGHT - paddle.y * ((VIRTUAL_HEIGHT - pinkPaddle.h) / (VIRTUAL_HEIGHT - paddle.h))
         }
         
 
