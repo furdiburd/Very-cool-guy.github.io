@@ -36,7 +36,7 @@
     const PROJECTILE_RADIUS = 6
     const PROJECTILE_SPEED = 320
     const PROJECTILE_DAMAGE = 20
-    const DIAMOND_RADIUS = 6
+    const DIAMOND_RADIUS = 10
     const DIAMOND_SPEED = 320
     const DIAMOND_DAMAGE = 20 // Amount of additional paddle height given by diamonds
     const PINK_RADIUS = 8
@@ -982,7 +982,17 @@
                     break
                 case 'diamond':
                     ctx.fillStyle = COLORS.DIAMOND
-                    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
+                    let points = [[null], [null], [null]]
+                    let turn = (performance.now() - this.spawnTime) / 300 * this.vx
+                    let angle = (0) * 2 * Math.PI / 3 + turn
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(this.r * Math.cos(angle) + this.x, this.r * Math.sin(angle) + this.y)
+                    angle = (1) * 2 * Math.PI / 3 + turn
+                    ctx.lineTo(this.r * Math.cos(angle) + this.x, this.r * Math.sin(angle) + this.y)
+                    angle = (2) * 2 * Math.PI / 3 + turn
+                    ctx.lineTo(this.r * Math.cos(angle) + this.x, this.r * Math.sin(angle) + this.y)
+                    
                     ctx.fill()
                     break
                 case 'pink':
