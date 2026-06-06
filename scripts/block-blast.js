@@ -57,8 +57,8 @@
         GREEN_D: '#228822',
         ORANGE: '#ffcc66',
         DIAMOND: '#33ddff',
-        PINK: '#ff66aa',
-        PINK_T: '#ff66aa80'
+        PINK: '#ffb6c1',
+        PINK_T: '#ffb6c180'
     }
     const COLORS2 = {
         BLACK_T: 'rgba(0,0,0,0.6)',
