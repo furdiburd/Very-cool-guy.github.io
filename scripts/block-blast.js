@@ -983,7 +983,7 @@
                 case 'diamond':
                     ctx.fillStyle = COLORS.DIAMOND
                     let points = [[null], [null], [null]]
-                    let turn = this.vx * (performance.now() - this.spawnTime) / 3000
+                    let turn = this.vx * (performance.now() - this.spawnTime) / 24000
                     let angle = (0) * 2 * Math.PI / 3 + turn
                     
                     ctx.beginPath();
