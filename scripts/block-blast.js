@@ -1161,7 +1161,7 @@
                     }
                     if (ball.type === 'pink') {
                         // Pink hits paddle: reset pink paddle
-                        pinkPaddle.h = diamondPaddle.h
+                        pinkPaddle.h += diamondPaddle.h
                         balls.splice(i, 1)
                         score(5, COLORS.PINK)
                         continue // Skip block collision check for this destroyed diamond
@@ -1210,8 +1210,7 @@
                 }
                 if (ball.type === 'pink') {
                     // Pink hits paddle: reset pink paddle
-                    pinkPaddle.h = paddle.h
-                    pinkPaddle.h = paddle.h
+                    pinkPaddle.h += paddle.h
                     balls.splice(i, 1)
                     score(5, COLORS.PINK)
                     continue // Skip block collision check for this destroyed diamond
@@ -1234,7 +1233,7 @@
                         ball.blocksHitCount = ball.type === 'piercing' ? 0 : Infinity // Reset block hit count
                         if (ball.type === 'pink') {
                             // Pink hits paddle: reset pink paddle
-                            pinkPaddle.h = Math.max(paddle.h, diamondPaddle.h)
+                            pinkPaddle.h += Math.max(paddle.h, diamondPaddle.h)
                             balls.splice(i, 1)
                             score(5, COLORS.PINK)
                             continue // Skip block collision check for this destroyed diamond
