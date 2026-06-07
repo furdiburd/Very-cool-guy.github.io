@@ -28,7 +28,7 @@
     const PADDLE_SPEED = 420
     const INITIAL_DIAMOND_BONUS = 0
     const INITIAL_PINK_HEIGHT = 0
-    const PINK_DEPLETION_RATE = 5 //The rate at which the pink paddle shrinks
+    const PINK_DEPLETION_RATE = 8 //The rate at which the pink paddle shrinks
 
     /* --- BALL/PROJECTILE PROPERTIES --- */
     const BALL_RADIUS = 10
@@ -57,8 +57,8 @@
         GREEN_D: '#228822',
         ORANGE: '#ffcc66',
         DIAMOND: '#33ddff',
-        PINK: '#ff66aa',
-        PINK_T: '#ff66aa80'
+        PINK: '#ffb6c1',
+        PINK_T: '#ffb6c180'
     }
     const COLORS2 = {
         BLACK_T: 'rgba(0,0,0,0.6)',
@@ -79,7 +79,7 @@
     const MITOSIS_BLOCK_WEIGHT = 1
     const EXPLODE_BLOCK_WEIGHT = 1
     const DIAMOND_BLOCK_WEIGHT = 0.5 //the light blue blocks
-    const PINK_BLOCK_WEIGHT = 0.08
+    const PINK_BLOCK_WEIGHT = 0.1
     const TOTAL_SPECIAL_WEIGHT =
         PROJECTILE_BLOCK_WEIGHT +
         BOMB_BLOCK_WEIGHT +
@@ -983,7 +983,7 @@
                 case 'diamond':
                     ctx.fillStyle = COLORS.DIAMOND
                     let points = [[null], [null], [null]]
-                    let turn = (performance.now() - this.spawnTime) / 300 * this.vx
+                    let turn = this.vx * (performance.now() - this.spawnTime) / 24000
                     let angle = (0) * 2 * Math.PI / 3 + turn
                     
                     ctx.beginPath();
@@ -1161,7 +1161,7 @@
                     }
                     if (ball.type === 'pink') {
                         // Pink hits paddle: reset pink paddle
-                        pinkPaddle.h = diamondPaddle.h
+                        pinkPaddle.h += diamondPaddle.h
                         balls.splice(i, 1)
                         score(5, COLORS.PINK)
                         continue // Skip block collision check for this destroyed diamond
@@ -1210,8 +1210,7 @@
                 }
                 if (ball.type === 'pink') {
                     // Pink hits paddle: reset pink paddle
-                    pinkPaddle.h = paddle.h
-                    pinkPaddle.h = paddle.h
+                    pinkPaddle.h += paddle.h
                     balls.splice(i, 1)
                     score(5, COLORS.PINK)
                     continue // Skip block collision check for this destroyed diamond
@@ -1234,7 +1233,7 @@
                         ball.blocksHitCount = ball.type === 'piercing' ? 0 : Infinity // Reset block hit count
                         if (ball.type === 'pink') {
                             // Pink hits paddle: reset pink paddle
-                            pinkPaddle.h = Math.max(paddle.h, diamondPaddle.h)
+                            pinkPaddle.h += Math.max(paddle.h, diamondPaddle.h)
                             balls.splice(i, 1)
                             score(5, COLORS.PINK)
                             continue // Skip block collision check for this destroyed diamond
