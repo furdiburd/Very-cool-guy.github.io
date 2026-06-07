@@ -28,7 +28,7 @@
     const PADDLE_SPEED = 420
     const INITIAL_DIAMOND_BONUS = 0
     const INITIAL_PINK_HEIGHT = 0
-    const PINK_DEPLETION_RATE = 5 //The rate at which the pink paddle shrinks
+    const PINK_DEPLETION_RATE = 8 //The rate at which the pink paddle shrinks
 
     /* --- BALL/PROJECTILE PROPERTIES --- */
     const BALL_RADIUS = 10
@@ -79,7 +79,7 @@
     const MITOSIS_BLOCK_WEIGHT = 1
     const EXPLODE_BLOCK_WEIGHT = 1
     const DIAMOND_BLOCK_WEIGHT = 0.5 //the light blue blocks
-    const PINK_BLOCK_WEIGHT = 0.08
+    const PINK_BLOCK_WEIGHT = 0.1
     const TOTAL_SPECIAL_WEIGHT =
         PROJECTILE_BLOCK_WEIGHT +
         BOMB_BLOCK_WEIGHT +
