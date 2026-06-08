@@ -1,16 +1,17 @@
 /* hii, if you wanna add songs upload them to resources/music and add the route here :) */
 
 const songs = [
-    "/resources/menuloop.mp3",
-    "/resources/music/2-X. All The Times - Rhythm Doctor.mp3",
-    "/resources/music/EMPTY DIARY - UNBEATABLE.mp3",
+    "/resources/menuloop.opus",
+    "/resources/music/2-X. All The Times - Rhythm Doctor.opus",
+    "/resources/music/EMPTY DIARY - UNBEATABLE.opus",
     "/resources/music/No Devil Lived On (8-2) - ULTRAKILL.ogg",
-    "/resources/music/ChickenSuitPony - Field of Love and Cringe.mp3",
-    "/resources/music/Oopsie Go Wrong - Zaki.mp3",
-    "/resources/music/Plizzanet - Yo! Noid 2 OST.mp3",
-    "/resources/music/Erasing Me Erasing You.mp3",
-    "/resources/music/Dongrang Who Denies All.mp3",
-    "/resources/music/Paul McCartney - Band On The Run.opus"
+    "/resources/music/ChickenSuitPony - Field of Love and Cringe.opus",
+    "/resources/music/Oopsie Go Wrong - Zaki.opus",
+    "/resources/music/Plizzanet - Yo! Noid 2 OST.opus",
+    "/resources/music/Erasing Me Erasing You.opus",
+    "/resources/music/Dongrang Who Denies All.opus",
+    "/resources/music/Paul McCartney - Band On The Run.opus",
+    "/resources/music/Warhammer 40,000 Mechanicus OST  - Children of the Omnissiah[Extended].opus"
 ];
 
 let currentSong = 0;
